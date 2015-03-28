@@ -16,23 +16,24 @@ import java.util.Timer;
 public class MockEffectenbeurs  implements IEffectenbeurs {
     
     //example fonds
-    private ArrayList<IFonds> exampleFonts;
+    private ArrayList<IFonds> exampleFonds;
     
     /**
      * 
      * constructor that adds a few fiction Fonds, Fonds will get a fake value in a later state
      */
     public MockEffectenbeurs(){
-        exampleFonts.add(new Fonds("Fontys"));
-        exampleFonts.add(new Fonds("Bravo"));
-        exampleFonts.add(new Fonds("Avans"));
-        exampleFonts.add(new Fonds("VVtamar"));
-        exampleFonts.add(new Fonds("Overflow"));
-        exampleFonts.add(new Fonds("BeastlyRiders"));
-        exampleFonts.add(new Fonds("Jumbo"));
-        exampleFonts.add(new Fonds("DataExpand"));
-        exampleFonts.add(new Fonds("Herbers"));
-        exampleFonts.add(new Fonds("LotOfStuff"));
+        exampleFonds = new ArrayList<>();
+        exampleFonds.add(new Fonds("Fontys"));
+        exampleFonds.add(new Fonds("Bravo"));
+        exampleFonds.add(new Fonds("Avans"));
+        exampleFonds.add(new Fonds("VVtamar"));
+        exampleFonds.add(new Fonds("Overflow"));
+        exampleFonds.add(new Fonds("BeastlyRiders"));
+        exampleFonds.add(new Fonds("Jumbo"));
+        exampleFonds.add(new Fonds("DataExpand"));
+        exampleFonds.add(new Fonds("Herbers"));
+        exampleFonds.add(new Fonds("LotOfStuff"));
     }
     
     /**
@@ -44,7 +45,7 @@ public class MockEffectenbeurs  implements IEffectenbeurs {
     public ArrayList<IFonds> getKoersen() {
         
         
-        return exampleFonts;
+        return exampleFonds;
     }
     
     /**
