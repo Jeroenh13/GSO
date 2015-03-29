@@ -19,7 +19,6 @@ public class AEXBanner extends Application {
     private Text text;
     private double textLength;
     private double textPosition;
-    double tmpTextLength;
 
     @Override
     public void start(Stage primaryStage) {

@@ -64,7 +64,7 @@ public class BannerController extends Application {
         StringBuilder sb = new StringBuilder();
         for(IFonds iF : effectenbeurs.getKoersen())
         {
-            sb.append(iF.getNaam()).append(":").append(iF.getKoers()).append("        ");
+            sb.append(iF.getNaam()).append(":").append(String.format("%.2f",iF.getKoers())).append("        ");
         }
         banner.setKoersen(sb.toString());
     }
