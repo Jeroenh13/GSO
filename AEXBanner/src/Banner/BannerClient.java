@@ -18,7 +18,7 @@ import java.util.ArrayList;
  *
  * @author Jeroen Hendriks
  */
-public class BannerClient implements Serializable{
+public class BannerClient implements Serializable {
 
     public IEffectenbeurs effectenbeurs = null;
     private Registry registry = null;
@@ -70,11 +70,17 @@ public class BannerClient implements Serializable{
     }
 
     public String getKoersen() throws RemoteException {
-         StringBuilder sb = new StringBuilder();
-        ArrayList<IFonds> fondsen = effectenbeurs.getKoersen();
-        for (IFonds iF : fondsen) {
-            sb.append(iF.getNaam()).append(":").append(String.format("%.2f", iF.getKoers())).append("        ");
-        }  
+        StringBuilder sb = new StringBuilder();
+        try {
+            ArrayList<IFonds> fondsen = effectenbeurs.getKoersen();
+            for (IFonds iF : fondsen) {
+                sb.append(iF.getNaam()).append(":").append(String.format("%.2f", iF.getKoers())).append("        ");
+            }
+            System.out.println("Updated");
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
         return sb.toString();
     }
+
 }

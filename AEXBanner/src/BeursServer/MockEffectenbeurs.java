@@ -5,6 +5,7 @@
  */
 package BeursServer;
 
+import Banner.BannerController;
 import Shared.IEffectenbeurs;
 import Shared.IFonds;
 import java.io.Serializable;
@@ -13,6 +14,11 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -39,6 +45,15 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenb
         exampleFonds.add(new Fonds("DataExpand",14));
         exampleFonds.add(new Fonds("Herbers",23.4));
         exampleFonds.add(new Fonds("LotOfStuff",123));
+        
+        Timer pollingTimer = new Timer("randomize");
+        pollingTimer.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
+            public void run() {
+                        RandomizeKoersen();
+                };
+        }, 0, 2000);
     }
     
     /**
@@ -47,11 +62,15 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenb
      */
     @Override
     public ArrayList<IFonds> getKoersen() throws RemoteException {
-        for(IFonds iF : exampleFonds)
+        return exampleFonds;
+    }
+    
+    public void RandomizeKoersen()
+    {
+         for(IFonds iF : exampleFonds)
         {
             iF.setKoers(iF.getKoers() + calculateKoers(iF));
         }
-        return exampleFonds;
     }
     
     /**
