@@ -1,52 +1,66 @@
 package Banner;
 
-import Beurs.*;
+import BeursServer.MockEffectenbeurs;
+import Shared.IEffectenbeurs;
+import Shared.IFonds;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-
 
 public class BannerController extends Application {
 
     private AEXBanner banner;
-    private IEffectenbeurs effectenbeurs;
+    private IEffectenbeurs effectenbeurs = null;
+    private Registry registry = null;
+    private static final String bindingName = "MockBeurs";
+    BannerClient client = null;
 
     @Override
     public void start(Stage primaryStage) {
+
         banner = new AEXBanner();
-        effectenbeurs = new MockEffectenbeurs();
+
         //primaryStage acts as the common stage of the AEXBanner and the 
         //BannerController:
         banner.start(primaryStage);
+
+        // Create client
+        client = new BannerClient("192.168.220.1", 1099);
         
         //create a timer which polls every 2 seconds
-        
         Timer pollingTimer = new Timer("KoersUpdate");
-        pollingTimer.scheduleAtFixedRate(new TimerTask(){
+        pollingTimer.scheduleAtFixedRate(new TimerTask() {
 
             @Override
             public void run() {
-                Platform.runLater(new Runnable(){
+                Platform.runLater(new Runnable() {
 
                     @Override
                     public void run() {
-                        updateKoersen();                        
+                        try {
+                            updateKoersen();
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
-                    
+
                 });
             }
         }, 0, 2000);
-        
-        // todo
 
-        
         //remove pollingTimer as soon as primaryStage is closing:
         primaryStage.setOnCloseRequest((WindowEvent we) -> {
-          pollingTimer.cancel();
+            pollingTimer.cancel();
         });
     }
 
@@ -57,16 +71,11 @@ public class BannerController extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+
     }
-    
-    void updateKoersen()
-    {
-        StringBuilder sb = new StringBuilder();
-        for(IFonds iF : effectenbeurs.getKoersen())
-        {
-            sb.append(iF.getNaam()).append(":").append(String.format("%.2f",iF.getKoers())).append("        ");
-        }
-        banner.setKoersen(sb.toString());
+
+    void updateKoersen() throws RemoteException {
+        banner.setKoersen(client.getKoersen());
     }
 
 }

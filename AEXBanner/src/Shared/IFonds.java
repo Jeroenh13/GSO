@@ -3,13 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Beurs;
+package Shared;
+
+import java.io.Serializable;
 
 /**
  *
  * @author Jeroen Hendriks
  */
-public interface IFonds {
+
+public interface IFonds extends Serializable {
         
     /**
      * Gets the name of the Fonds
@@ -22,5 +25,7 @@ public interface IFonds {
      * @return the koers
      */
     double getKoers();
+    
+    public void setKoers(double newKoers);
     
 }

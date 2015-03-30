@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Beurs;
+package BeursServer;
 
+import Shared.IEffectenbeurs;
+import Shared.IFonds;
 import java.util.ArrayList;
 
 /**
@@ -17,5 +19,4 @@ public class Effectenbeurs implements IEffectenbeurs{
     public ArrayList<IFonds> getKoersen() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
 }

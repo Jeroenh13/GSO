@@ -3,19 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Beurs;
+package BeursServer;
+
+import Shared.IFonds;
+import java.io.Serializable;
 
 /**
  *
  * @author Anna-May
- */
-class Fonds implements IFonds {
+*/
+public class Fonds implements IFonds {
     
     private final String naam;
     private double koers;
     
-    public Fonds(String naam) {
+    public Fonds(String naam,double koers) {
         this.naam = naam;
+        this.koers = koers;
     }
 
     @Override
@@ -28,6 +32,7 @@ class Fonds implements IFonds {
         return koers;
     }
     
+    @Override
     public void setKoers(double newKoers){
         koers = newKoers;
     }
