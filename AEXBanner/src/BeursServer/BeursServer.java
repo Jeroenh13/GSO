@@ -5,6 +5,7 @@
  */
 package BeursServer;
 
+import Shared.IEffectenbeurs;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -27,7 +28,7 @@ public class BeursServer {
 
     // References to registry and student administration
     private Registry registry = null;
-    private MockEffectenbeurs MockBeurs = null;
+    private IEffectenbeurs MockBeurs = null;
 
     // Constructor
     public BeursServer() {
@@ -35,7 +36,7 @@ public class BeursServer {
         // Print port number for registry
         System.out.println("Server: Port number " + portNumber);
 
-        // Create student administration
+        // Create Mockeffectenbeurs
         try {
             MockBeurs = new MockEffectenbeurs();
             System.out.println("Server: MockEffectenbeurs created");
@@ -55,7 +56,7 @@ public class BeursServer {
             registry = null;
         }
 
-        // Bind student administration using registry
+        // Bind Mockeffectenbeurs using registry
         try {
             registry.rebind(bindingName, MockBeurs);
         } catch (RemoteException ex) {

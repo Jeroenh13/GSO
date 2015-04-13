@@ -18,7 +18,7 @@ import java.util.ArrayList;
  *
  * @author Jeroen Hendriks
  */
-public class BannerClient implements Serializable {
+public class BannerClient{
 
     public IEffectenbeurs effectenbeurs = null;
     private Registry registry = null;

@@ -5,26 +5,20 @@
  */
 package BeursServer;
 
-import Banner.BannerController;
 import Shared.IEffectenbeurs;
 import Shared.IFonds;
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.application.Platform;
-import javafx.stage.WindowEvent;
 
 /**
  *
  * @author Jeroen Hendriks
  */
-public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenbeurs, Serializable {
+public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenbeurs {
     
     //example fonds
     private ArrayList<IFonds> exampleFonds;

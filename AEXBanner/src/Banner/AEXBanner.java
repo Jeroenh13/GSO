@@ -50,7 +50,7 @@ public class AEXBanner extends Application {
                         textPosition = WIDTH;
                     }
                     textPosition = textPosition - 4;
-                    text.relocate(textPosition, 0);
+                    text.relocate(textPosition,0);
                 }
             }
 

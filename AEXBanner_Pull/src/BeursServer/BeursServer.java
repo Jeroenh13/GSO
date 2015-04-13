@@ -5,6 +5,7 @@
  */
 package BeursServer;
 
+import fontys.observer.BasicPublisher;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -18,7 +19,7 @@ import java.util.Enumeration;
  *
  * @author Jeroen Hendriks
  */
-public class BeursServer extends {
+public class BeursServer {
     
     private static final int portNumber = 1099;
 
@@ -38,6 +39,7 @@ public class BeursServer extends {
         // Create student administration
         try {
             MockBeurs = new MockEffectenbeurs();
+            MockBeurs.bp = new BasicPublisher(new String[]{"koers"});
             System.out.println("Server: MockEffectenbeurs created");
         } catch (RemoteException ex) {
             System.out.println("Server: Cannot create MockEffectenbeurs");

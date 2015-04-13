@@ -47,11 +47,7 @@ public class BannerController extends Application {
 
                     @Override
                     public void run() {
-                        try {
-                            updateKoersen();
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                        updateKoersen();
                     }
 
                 });
@@ -74,8 +70,12 @@ public class BannerController extends Application {
 
     }
 
-    void updateKoersen() throws RemoteException {
-        banner.setKoersen(client.getKoersen());
+    void updateKoersen() {
+        try
+        {
+            banner.setKoersen(client.getKoersen());
+        }
+        catch(RemoteException ex){banner.setKoersen("Nothing to display");}
     }
 
 }

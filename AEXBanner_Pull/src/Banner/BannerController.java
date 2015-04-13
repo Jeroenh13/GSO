@@ -1,27 +1,21 @@
 package Banner;
 
-import BeursServer.MockEffectenbeurs;
 import Shared.IEffectenbeurs;
 import Shared.IFonds;
-import java.rmi.NotBoundException;
+import fontys.observer.RemotePropertyListener;
+import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
-public class BannerController extends Application {
+public class BannerController extends Application implements RemotePropertyListener {
 
     private AEXBanner banner;
-    private IEffectenbeurs effectenbeurs = null;
-    private Registry registry = null;
+    private final IEffectenbeurs effectenbeurs = null;
+    private final Registry registry = null;
     private static final String bindingName = "MockBeurs";
     BannerClient client = null;
 
@@ -35,33 +29,14 @@ public class BannerController extends Application {
         banner.start(primaryStage);
 
         // Create client
-        client = new BannerClient("10.0.0.10", 1099);
-        
-        //create a timer which polls every 2 seconds
-        Timer pollingTimer = new Timer("KoersUpdate");
-        pollingTimer.scheduleAtFixedRate(new TimerTask() {
-
-            @Override
-            public void run() {
-                Platform.runLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        try {
-                            updateKoersen();
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(BannerController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-
-                });
-            }
-        }, 0, 2000);
-
-        //remove pollingTimer as soon as primaryStage is closing:
-        primaryStage.setOnCloseRequest((WindowEvent we) -> {
-            pollingTimer.cancel();
-        });
+        client = new BannerClient("192.168.220.1", 1099);
+        try {
+            UnicastRemoteObject.exportObject(this, 100);
+            client.effectenbeurs.addListener(this, "koers");
+            System.out.println("Added");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     /**
@@ -76,6 +51,21 @@ public class BannerController extends Application {
 
     void updateKoersen() throws RemoteException {
         banner.setKoersen(client.getKoersen());
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
+        StringBuilder sb = new StringBuilder();
+        try {
+            ArrayList<IFonds> fondsen = (ArrayList<IFonds>) evt.getNewValue();
+            for (IFonds iF : fondsen) {
+                sb.append(iF.getNaam()).append(":").append(String.format("%.2f", iF.getKoers())).append("        ");
+            }
+            System.out.println("Updated");
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        banner.setKoersen(sb.toString());
     }
 
 }
