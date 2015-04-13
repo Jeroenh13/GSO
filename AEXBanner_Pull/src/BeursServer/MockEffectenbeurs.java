@@ -5,7 +5,6 @@
  */
 package BeursServer;
 
-import Banner.BannerController;
 import Shared.IEffectenbeurs;
 import Shared.IFonds;
 import fontys.observer.*;
@@ -33,6 +32,7 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenb
      * a later state
      */
     public MockEffectenbeurs() throws RemoteException {
+        bp = new BasicPublisher(new String[]{"koers"});
         exampleFonds = new ArrayList<>();
         exampleFonds.add(new Fonds("Fontys", 200));
         exampleFonds.add(new Fonds("Bravo", 5.4));
@@ -50,9 +50,10 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenb
 
             @Override
             public void run() {
+                ArrayList<IFonds> old = new ArrayList<>(exampleFonds);
                 RandomizeKoersen();
+                bp.inform(this, "koers", old, exampleFonds);
             }
-         ;
         }, 0, 2000);
     }
 
@@ -66,11 +67,9 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenb
     }
 
     public void RandomizeKoersen() {
-        ArrayList<IFonds> old = new ArrayList<>(exampleFonds);
         for (IFonds iF : exampleFonds) {
             iF.setKoers(iF.getKoers() + calculateKoers(iF));
         }
-        bp.inform(this, "koers", old, exampleFonds);
     }
 
     /**

@@ -1,17 +1,12 @@
 package Banner;
 
 import Shared.IEffectenbeurs;
-import Shared.IFonds;
-import fontys.observer.RemotePropertyListener;
-import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class BannerController extends Application implements RemotePropertyListener {
+public class BannerController extends Application {
 
     private AEXBanner banner;
     private final IEffectenbeurs effectenbeurs = null;
@@ -20,7 +15,7 @@ public class BannerController extends Application implements RemotePropertyListe
     BannerClient client = null;
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws RemoteException {
 
         banner = new AEXBanner();
 
@@ -29,14 +24,8 @@ public class BannerController extends Application implements RemotePropertyListe
         banner.start(primaryStage);
 
         // Create client
-        client = new BannerClient("192.168.220.1", 1099);
-        try {
-            UnicastRemoteObject.exportObject(this, 100);
-            client.effectenbeurs.addListener(this, "koers");
-            System.out.println("Added");
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
+        client = new BannerClient();
+        client.Connect("10.0.0.10", 1099, banner);
     }
 
     /**
@@ -46,26 +35,5 @@ public class BannerController extends Application implements RemotePropertyListe
      */
     public static void main(String[] args) {
         launch(args);
-
     }
-
-    void updateKoersen() throws RemoteException {
-        banner.setKoersen(client.getKoersen());
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
-        StringBuilder sb = new StringBuilder();
-        try {
-            ArrayList<IFonds> fondsen = (ArrayList<IFonds>) evt.getNewValue();
-            for (IFonds iF : fondsen) {
-                sb.append(iF.getNaam()).append(":").append(String.format("%.2f", iF.getKoers())).append("        ");
-            }
-            System.out.println("Updated");
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
-        banner.setKoersen(sb.toString());
-    }
-
 }

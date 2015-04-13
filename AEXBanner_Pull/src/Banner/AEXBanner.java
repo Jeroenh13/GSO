@@ -2,6 +2,7 @@ package Banner;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -13,7 +14,7 @@ public class AEXBanner extends Application {
 
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 100;
-    public static final int NANO_TICKS = 20000000; 
+    public static final int NANO_TICKS = 20000000;
     // FRAME_RATE = 1000000000/NANO_TICKS = 50;
 
     private Text text;
@@ -44,9 +45,8 @@ public class AEXBanner extends Application {
             public void handle(long now) {
                 long lag = now - prevUpdate;
                 if (lag >= NANO_TICKS) {
-                    
-                    if(textPosition < -textLength)
-                    {
+
+                    if (textPosition < -textLength) {
                         textPosition = WIDTH;
                     }
                     textPosition = textPosition - 4;
@@ -58,7 +58,7 @@ public class AEXBanner extends Application {
             public void start() {
                 prevUpdate = System.nanoTime();
                 textPosition = WIDTH;
-                text.relocate(textPosition, 0);                
+                text.relocate(textPosition, 0);
                 setKoersen("Nothing to display");
                 super.start();
             }
@@ -67,7 +67,13 @@ public class AEXBanner extends Application {
     }
 
     public void setKoersen(String koersen) {
-        text.setText(koersen);
-        textLength = text.getLayoutBounds().getWidth();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                text.setText(koersen);
+                textLength = text.getLayoutBounds().getWidth();
+            }
+        });
     }
 }
