@@ -5,7 +5,7 @@
  */
 package Shared;
 
-import java.rmi.Remote;
+import fontys.observer.RemotePublisher;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author Jeroen Hendriks
  */
-public interface IEffectenbeurs extends Remote {
+public interface IEffectenbeurs extends RemotePublisher {
     
     public ArrayList<IFonds> getKoersen() throws RemoteException;
     

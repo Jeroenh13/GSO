@@ -5,7 +5,7 @@
  */
 package BeursServer;
 
-import Shared.IEffectenbeurs;
+import fontys.observer.BasicPublisher;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -28,7 +28,7 @@ public class BeursServer {
 
     // References to registry and student administration
     private Registry registry = null;
-    private IEffectenbeurs MockBeurs = null;
+    private MockEffectenbeurs MockBeurs = null;
 
     // Constructor
     public BeursServer() {
@@ -36,9 +36,10 @@ public class BeursServer {
         // Print port number for registry
         System.out.println("Server: Port number " + portNumber);
 
-        // Create Mockeffectenbeurs
+        // Create student administration
         try {
             MockBeurs = new MockEffectenbeurs();
+            MockBeurs.bp = new BasicPublisher(new String[]{"koers"});
             System.out.println("Server: MockEffectenbeurs created");
         } catch (RemoteException ex) {
             System.out.println("Server: Cannot create MockEffectenbeurs");
@@ -56,7 +57,7 @@ public class BeursServer {
             registry = null;
         }
 
-        // Bind Mockeffectenbeurs using registry
+        // Bind student administration using registry
         try {
             registry.rebind(bindingName, MockBeurs);
         } catch (RemoteException ex) {
