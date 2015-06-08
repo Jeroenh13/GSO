@@ -37,7 +37,7 @@ import javafx.stage.Stage;
  *
  * @author frankcoenen
  */
-public class BankierClient extends Application implements Serializable {
+public class BankierClient extends Application {
     
     private Stage stage;
     private final double MINIMUM_WINDOW_WIDTH = 390.0;

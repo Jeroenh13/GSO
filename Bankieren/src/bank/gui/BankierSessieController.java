@@ -33,7 +33,7 @@ import javafx.scene.control.TextField;
  *
  * @author frankcoenen
  */
-public class BankierSessieController implements Initializable, Serializable, RemotePropertyListener {
+public class BankierSessieController implements Initializable, RemotePropertyListener {
 
     @FXML
     private Hyperlink hlLogout;
@@ -70,6 +70,7 @@ public class BankierSessieController implements Initializable, Serializable, Rem
             String eigenaar = rekening.getEigenaar().getNaam() + " te "
                     + rekening.getEigenaar().getPlaats();
             tfNameCity.setText(eigenaar);
+            UnicastRemoteObject.exportObject(this, 1100);
             balie.addListener(this, String.valueOf(sessie.getRekening().getNr()));
         } catch (InvalidSessionException ex) {
             taMessage.setText("bankiersessie is verlopen");
@@ -125,6 +126,8 @@ public class BankierSessieController implements Initializable, Serializable, Rem
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        IRekening rekening = (IRekening)evt.getNewValue();
+        tfAccountNr.setText(rekening.getNr() + "");
+        tfBalance.setText(rekening.getSaldo() + "");
     }
 }
