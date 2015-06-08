@@ -20,6 +20,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -126,8 +127,17 @@ public class BankierSessieController implements Initializable, RemotePropertyLis
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
-        IRekening rekening = (IRekening)evt.getNewValue();
-        tfAccountNr.setText(rekening.getNr() + "");
-        tfBalance.setText(rekening.getSaldo() + "");
+        Platform.runLater(new Runnable()
+        {
+
+            @Override
+            public void run() {
+                IRekening rekening = (IRekening)evt.getNewValue();
+                tfAccountNr.setText(rekening.getNr() + "");
+                tfBalance.setText(rekening.getSaldo() + "");
+            }
+            
+        }
+        );
     }
 }
