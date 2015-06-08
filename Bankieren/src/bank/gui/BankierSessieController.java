@@ -85,12 +85,13 @@ public class BankierSessieController implements Initializable, RemotePropertyLis
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
     }
 
     @FXML
@@ -115,6 +116,25 @@ public class BankierSessieController implements Initializable, RemotePropertyLis
             long centen = (long) (Double.parseDouble(tfAmount.getText()) * 100);
             if (sessie.maakOver(to, new Money(centen, Money.EURO))) {
                 balie.inform(to);
+                Platform.runLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        IRekening rekening = null;
+                        try {
+                            rekening = (IRekening) sessie.getRekening();
+                        } catch (InvalidSessionException | RemoteException ex) {
+                            Logger.getLogger(BankierSessieController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        if(rekening != null)
+                        {
+                            tfAccountNr.setText(rekening.getNr() + "");
+                            tfBalance.setText(rekening.getSaldo() + "");
+                        }
+                    }
+
+                }
+                );
             }
         } catch (RemoteException e1) {
             e1.printStackTrace();
@@ -127,16 +147,15 @@ public class BankierSessieController implements Initializable, RemotePropertyLis
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
-        Platform.runLater(new Runnable()
-        {
+        Platform.runLater(new Runnable() {
 
             @Override
             public void run() {
-                IRekening rekening = (IRekening)evt.getNewValue();
+                IRekening rekening = (IRekening) evt.getNewValue();
                 tfAccountNr.setText(rekening.getNr() + "");
                 tfBalance.setText(rekening.getSaldo() + "");
             }
-            
+
         }
         );
     }
