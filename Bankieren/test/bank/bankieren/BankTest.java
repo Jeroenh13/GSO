@@ -131,6 +131,7 @@ public class BankTest {
      */
     @Test
     public void testGetRekening() {
+        //Eenmalige test
         try {
             Bank testbank = new Bank("TestBank");
             testbank.openRekening("Henk", "Eindhoven");
@@ -143,6 +144,7 @@ public class BankTest {
             Assert.fail(e.getLocalizedMessage());
         }
 
+        //Drievoudige test
         try {
             Bank testbank = new Bank("TestBank");
             testbank.openRekening("Henk", "Eindhoven");
