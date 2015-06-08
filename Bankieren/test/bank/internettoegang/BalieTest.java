@@ -8,16 +8,12 @@ package bank.internettoegang;
 import bank.bankieren.Bank;
 import bank.bankieren.IBank;
 import bank.server.BalieServer;
-import fontys.observer.RemotePropertyListener;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.After;
-import org.junit.AfterClass;
+import static org.junit.Assert.fail;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -53,21 +49,32 @@ public class BalieTest {
             if (accName == null) {
                 System.out.println("Test Succeeded name is empty");
             }
+            else{
+                fail("Name is not empty");
+            }
             accName = balie.openRekening("Jeroen", "", "asdf");
             if (accName == null) {
                 System.out.println("Test Succeeded city is empty");
+            }else{
+                fail("City is not empty");
             }
             accName = balie.openRekening("Jeroen", "Wijchen", "adf");
             if (accName == null) {
                 System.out.println("Test Succeeded password too short");
+            }else{
+                fail("Password too short");
             }
             accName = balie.openRekening("Jeroen", "Wijchen", "aksidufpw");
             if (accName == null) {
                 System.out.println("Test Succeeded password too long");
+            }else{
+                fail("Password too long");
             }
             accName = balie.openRekening("Jeroen", "Wijchen", "asdf");
             if (accName != null) {
                 System.out.println("Test Succeeded");
+            }else{
+                fail("Account not created");
             }
 
             System.out.println("End of 'openRekening' \n---------------------------");
@@ -78,10 +85,16 @@ public class BalieTest {
             {
                 System.out.println("Test Succeeded, Account doesn't exist");
             }
+            else{
+                fail("Account created");
+            }
             sessie = balie.logIn(accName, "asdf");
             if(sessie != null)
             {
                 System.out.println("Test succeeded");
+            }
+            else{
+                fail("Account not existing");
             }
             System.out.println("End of login\n---------------------------");
         } catch (RemoteException ex) {
