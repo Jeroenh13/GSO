@@ -180,84 +180,86 @@ public class BankTest {
             Bank testbank = new Bank("TestBank");
             testbank.openRekening("Henk", "Eindhoven");
             testbank.openRekening("Bob", "Rotterdam");
-            
+
             IRekening rekeningHenk = testbank.getRekening(100000000);
             IRekening rekeningBob = testbank.getRekening(100000001);
-            
-            Money overmaakBedrag = new Money(100, Money.EURO);            
+
+            Money overmaakBedrag = new Money(100, Money.EURO);
             maakOverBool = testbank.maakOver(rekeningHenk.getNr(), rekeningBob.getNr(), overmaakBedrag);
-            
+
             Money saldoHenk = rekeningHenk.getSaldo();
             Money saldoBob = rekeningBob.getSaldo();
-            
+
             Assert.assertEquals(saldoHenk.getCents(), 900);
             Assert.assertEquals(saldoBob.getCents(), 1100);
-            
-            
+
         } catch (Exception e) {
             Assert.fail(e.getLocalizedMessage());
         }
-        
+
         // Negatief bedrag
         try {
             Boolean maakOverBool;
             Bank testbank = new Bank("TestBank");
             testbank.openRekening("Henk", "Eindhoven");
             testbank.openRekening("Bob", "Rotterdam");
-            
+
             IRekening rekeningHenk = testbank.getRekening(100000000);
             IRekening rekeningBob = testbank.getRekening(100000001);
-            
-            Money overmaakBedrag = new Money(-100, Money.EURO);            
+
+            Money overmaakBedrag = new Money(-100, Money.EURO);
             maakOverBool = testbank.maakOver(rekeningHenk.getNr(), rekeningBob.getNr(), overmaakBedrag);
             Assert.fail();
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
         }
-        
+
         // Overmaken naar eigen rekening
         try {
             Boolean maakOverBool;
             Bank testbank = new Bank("TestBank");
             testbank.openRekening("Henk", "Eindhoven");
-            
+
             IRekening rekeningHenk = testbank.getRekening(100000000);
-            
-            Money overmaakBedrag = new Money(100, Money.EURO);            
+
+            Money overmaakBedrag = new Money(100, Money.EURO);
             maakOverBool = testbank.maakOver(rekeningHenk.getNr(), rekeningHenk.getNr(), overmaakBedrag);
             Assert.fail();
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
         }
-        
+
         // Overmaken naar niet bestaande rekening
         try {
             Boolean maakOverBool;
             Bank testbank = new Bank("TestBank");
             testbank.openRekening("Henk", "Eindhoven");
-            
+
             IRekening rekeningHenk = testbank.getRekening(100000000);
-            Money overmaakBedrag = new Money(100, Money.EURO);   
-            
+            Money overmaakBedrag = new Money(100, Money.EURO);
+
             maakOverBool = testbank.maakOver(rekeningHenk.getNr(), 1000000002, overmaakBedrag);
             Assert.fail();
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
         }
-        
+
         // Overmaken van te groot bedrag
         try {
             Boolean maakOverBool;
             Bank testbank = new Bank("TestBank");
             testbank.openRekening("Henk", "Eindhoven");
             testbank.openRekening("Bob", "Rotterdam");
-            
+
             IRekening rekeningHenk = testbank.getRekening(100000000);
             IRekening rekeningBob = testbank.getRekening(100000001);
-            
-            Money overmaakBedrag = new Money(500000, Money.EURO);            
+
+            Money overmaakBedrag = new Money(500000, Money.EURO);
             maakOverBool = testbank.maakOver(rekeningHenk.getNr(), rekeningBob.getNr(), overmaakBedrag);
-            Assert.fail();
+            if (maakOverBool == true) {
+                Assert.fail("Can't transfer money you don't have");
+            }
+
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
         }
@@ -268,13 +270,12 @@ public class BankTest {
      */
     @Test
     public void testGetName() {
-        System.out.println("getName");
-        Bank instance = null;
-        String expResult = "";
-        String result = instance.getName();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        try {
+            Bank testbank = new Bank("TestBank");
+            Assert.assertEquals(testbank.getName(), "TestBank");
+        } catch (Exception e) {
+            Assert.fail(e.getLocalizedMessage());
+        }
     }
 
 }
