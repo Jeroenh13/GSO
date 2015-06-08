@@ -16,6 +16,7 @@ import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,7 +33,7 @@ import javafx.scene.control.TextField;
  *
  * @author frankcoenen
  */
-public class BankierSessieController implements Initializable, RemotePropertyListener  {
+public class BankierSessieController implements Initializable, Serializable, RemotePropertyListener {
 
     @FXML
     private Hyperlink hlLogout;
@@ -82,6 +83,8 @@ public class BankierSessieController implements Initializable, RemotePropertyLis
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -108,8 +111,7 @@ public class BankierSessieController implements Initializable, RemotePropertyLis
                 taMessage.setText("can't transfer money to your own account");
             }
             long centen = (long) (Double.parseDouble(tfAmount.getText()) * 100);
-            if(sessie.maakOver(to, new Money(centen, Money.EURO)))
-            {
+            if (sessie.maakOver(to, new Money(centen, Money.EURO))) {
                 balie.inform(to);
             }
         } catch (RemoteException e1) {

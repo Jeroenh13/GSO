@@ -20,6 +20,7 @@ import bank.internettoegang.IBankiersessie;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.rmi.Naming;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -36,7 +37,7 @@ import javafx.stage.Stage;
  *
  * @author frankcoenen
  */
-public class BankierClient extends Application {
+public class BankierClient extends Application implements Serializable {
     
     private Stage stage;
     private final double MINIMUM_WINDOW_WIDTH = 390.0;
