@@ -9,6 +9,7 @@ import bank.bankieren.Bank;
 import bank.bankieren.IBank;
 import bank.bankieren.IRekening;
 import bank.bankieren.Money;
+import fontys.util.NumberDoesntExistException;
 import java.rmi.RemoteException;
 import junit.framework.Assert;
 import org.junit.After;
@@ -16,7 +17,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -52,14 +52,14 @@ public class BankiersessieTest {
         try {
             IBank bank = new Bank("TestBank");
             IBankiersessie sessie = new Bankiersessie(1000000, bank);
-            
+
             Boolean b = sessie.isGeldig();
             Assert.assertTrue(b);
-            
+
             Thread.sleep(7000);
             b = sessie.isGeldig();
             Assert.assertFalse(b);
-            
+
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
         }
@@ -70,15 +70,37 @@ public class BankiersessieTest {
      */
     @Test
     public void testMaakOver() throws Exception {
-        System.out.println("maakOver");
-        int bestemming = 0;
-        Money bedrag = null;
-        Bankiersessie instance = null;
-        boolean expResult = false;
-        boolean result = instance.maakOver(bestemming, bedrag);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        IBank bank = new Bank("TestBank");
+        bank.openRekening("Jeroen", "Wijchen");
+        bank.openRekening("Lisa", "Eindhoven");
+        IBankiersessie sessie = new Bankiersessie(100000000, bank);
+        try {
+            //Werkende rekening
+            sessie.maakOver(100000001, new Money(20, Money.EURO));
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+
+        try {
+            //Negatief money
+            sessie.maakOver(100000001, new Money(-20, Money.EURO));
+        } catch (RuntimeException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+
+        try {
+            //Zelfde rekeningnummer
+            sessie.maakOver(100000000, new Money(20, Money.EURO));
+        } catch (RuntimeException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+
+        try {
+            //Niet bestaand rekeningnummer
+            sessie.maakOver(100000003, new Money(20, Money.EURO));
+        } catch (NumberDoesntExistException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
     }
 
     /**
@@ -86,13 +108,16 @@ public class BankiersessieTest {
      */
     @Test
     public void testGetRekening() throws Exception {
-        System.out.println("getRekening");
-        Bankiersessie instance = null;
-        IRekening expResult = null;
-        IRekening result = instance.getRekening();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        try {
+            IBank bank = new Bank("TestBank");
+            bank.openRekening("Jeroen", "Wijchen");
+            IRekening rek = bank.getRekening(100000000);
+            Assert.assertEquals(100000000, rek.getNr());
+            Assert.assertEquals("Jeroen", rek.getEigenaar().getNaam());
+            Assert.assertEquals("Wijchen", rek.getEigenaar().getPlaats());
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+        }
     }
 
     /**
@@ -100,11 +125,6 @@ public class BankiersessieTest {
      */
     @Test
     public void testLogUit() throws Exception {
-        System.out.println("logUit");
-        Bankiersessie instance = null;
-        instance.logUit();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
 }
