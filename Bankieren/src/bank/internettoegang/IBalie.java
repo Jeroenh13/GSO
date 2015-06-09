@@ -37,6 +37,7 @@ public interface IBalie extends Remote , RemotePublisher {
    * Triggered de balie om de de gebruiker van het rekeningnummer te informeren over de
    * gemaakt transactie
    * @param to 
+     * @throws java.rmi.RemoteException 
    */
   public void inform(int to) throws RemoteException;
   
