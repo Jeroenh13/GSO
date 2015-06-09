@@ -6,8 +6,12 @@
 package bank.gui;
 
 import bank.internettoegang.IBalie;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -46,7 +50,11 @@ public class BankSelectController implements Initializable {
         cbSelectBank.valueProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue ov, Object t, Object t1) {
-                bankNaam = (String) ov.getValue();
+                try {
+                    bankNaam = URLEncoder.encode((String)ov.getValue(), "UTF-8");
+                } catch (UnsupportedEncodingException ex) {
+                    Logger.getLogger(BankSelectController.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 IBalie balie =  application.connectToBalie(bankNaam);
                 application.gotoLogin(balie, "");
             }

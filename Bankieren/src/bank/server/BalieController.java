@@ -12,6 +12,7 @@ import bank.internettoegang.Balie;
 import bank.internettoegang.IBalie;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.rmi.Naming;
 import java.util.Properties;
@@ -59,10 +60,14 @@ public class BalieController implements Initializable {
             @Override
             public void changed(ObservableValue ov, Object t, Object t1) {
                 bankNaam = (String) ov.getValue();
-                if (application.startBalie(bankNaam)) {
-                    taMessage.setText(bankNaam + " bank is online");
-                } else {
-                    taMessage.setText("Connection Failed");
+                try {
+                    if (application.startBalie(bankNaam)) {
+                        taMessage.setText(bankNaam + " bank is online");
+                    } else {
+                        taMessage.setText("Connection Failed");
+                    }
+                } catch (UnsupportedEncodingException ex) {
+                    Logger.getLogger(BalieController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

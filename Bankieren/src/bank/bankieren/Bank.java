@@ -12,14 +12,24 @@ public class Bank implements IBank {
 	 */
 	private static final long serialVersionUID = -8728841131739353765L;
 	private Map<Integer,IRekeningTbvBank> accounts;
+        private Map<String, Integer> bankNumbers;
 	private Collection<IKlant> clients;
 	private int nieuwReknr;
 	private String name;
 
 	public Bank(String name) {
 		accounts = new HashMap<Integer,IRekeningTbvBank>();
+                bankNumbers = new HashMap<String, Integer>();
 		clients = new ArrayList<IKlant>();
-		nieuwReknr = 100000000;	
+                
+                bankNumbers.put("RaboBank", 100000000);
+                bankNumbers.put("ING", 200000000);
+                bankNumbers.put("SNS", 300000000);
+                bankNumbers.put("ABN+AMRO", 400000000);
+                bankNumbers.put("ASN", 500000000);
+                
+                System.out.println(name);
+		nieuwReknr = bankNumbers.get(name);	
 		this.name = name;	
 	}
 
