@@ -50,7 +50,7 @@ public class BankiersessieTest {
     public void testIsGeldig() throws RemoteException {
         //Voor het testen is de geldigheidsduur verkort naar 6 seconden, dit moeten weer 10 minuten worden
         try {
-            IBank bank = new Bank("TestBank");
+            IBank bank = new Bank("RaboBank");
             IBankiersessie sessie = new Bankiersessie(1000000, bank);
 
             Boolean b = sessie.isGeldig();
@@ -70,7 +70,7 @@ public class BankiersessieTest {
      */
     @Test
     public void testMaakOver() throws Exception {
-        IBank bank = new Bank("TestBank");
+        IBank bank = new Bank("RaboBank");
         bank.openRekening("Jeroen", "Wijchen");
         bank.openRekening("Lisa", "Eindhoven");
         IBankiersessie sessie = new Bankiersessie(100000000, bank);
@@ -109,7 +109,7 @@ public class BankiersessieTest {
     @Test
     public void testGetRekening() throws Exception {
         try {
-            IBank bank = new Bank("TestBank");
+            IBank bank = new Bank("RaboBank");
             bank.openRekening("Jeroen", "Wijchen");
             IRekening rek = bank.getRekening(100000000);
             Assert.assertEquals(100000000, rek.getNr());

@@ -45,7 +45,7 @@ public class BankTest {
     public void testOpenRekening() {
         // Test lege name
         try {
-            Bank testbank = new Bank("TestBank");
+            Bank testbank = new Bank("RaboBank");
             String name = "";
             String city = "Eindhoven";
 
@@ -60,7 +60,7 @@ public class BankTest {
 
         // Test lege city
         try {
-            Bank testbank = new Bank("TestBank");
+            Bank testbank = new Bank("RaboBank");
             String name = "Naam";
             String city = "";
 
@@ -75,7 +75,7 @@ public class BankTest {
 
         // Test lege name en city
         try {
-            Bank testbank = new Bank("TestBank");
+            Bank testbank = new Bank("RaboBank");
             String name = "";
             String city = "";
 
@@ -90,7 +90,7 @@ public class BankTest {
 
         // Test nieuwe klant
         try {
-            Bank testbank = new Bank("TestBank");
+            Bank testbank = new Bank("RaboBank");
             String name = "Bob";
             String city = "Eindhoven";
 
@@ -105,7 +105,7 @@ public class BankTest {
 
         // Test 2 nieuwe klanten
         try {
-            Bank testbank = new Bank("TestBank");
+            Bank testbank = new Bank("RaboBank");
             String name = "Bob";
             String city = "Eindhoven";
 
@@ -133,7 +133,7 @@ public class BankTest {
     public void testGetRekening() {
         //Eenmalige test
         try {
-            Bank testbank = new Bank("TestBank");
+            Bank testbank = new Bank("RaboBank");
             testbank.openRekening("Henk", "Eindhoven");
 
             IRekening rekening = testbank.getRekening(100000000);
@@ -146,7 +146,7 @@ public class BankTest {
 
         //Drievoudige test
         try {
-            Bank testbank = new Bank("TestBank");
+            Bank testbank = new Bank("RaboBank");
             testbank.openRekening("Henk", "Eindhoven");
             testbank.openRekening("Bob", "Rotterdam");
             testbank.openRekening("Sjaak", "Langeraar");
@@ -179,7 +179,7 @@ public class BankTest {
         // "Gewone" test
         try {
             Boolean maakOverBool;
-            Bank testbank = new Bank("TestBank");
+            Bank testbank = new Bank("RaboBank");
             testbank.openRekening("Henk", "Eindhoven");
             testbank.openRekening("Bob", "Rotterdam");
 
@@ -202,7 +202,7 @@ public class BankTest {
         // Negatief bedrag
         try {
             Boolean maakOverBool;
-            Bank testbank = new Bank("TestBank");
+            Bank testbank = new Bank("RaboBank");
             testbank.openRekening("Henk", "Eindhoven");
             testbank.openRekening("Bob", "Rotterdam");
 
@@ -219,7 +219,7 @@ public class BankTest {
         // Overmaken naar eigen rekening
         try {
             Boolean maakOverBool;
-            Bank testbank = new Bank("TestBank");
+            Bank testbank = new Bank("RaboBank");
             testbank.openRekening("Henk", "Eindhoven");
 
             IRekening rekeningHenk = testbank.getRekening(100000000);
@@ -234,7 +234,7 @@ public class BankTest {
         // Overmaken naar niet bestaande rekening
         try {
             Boolean maakOverBool;
-            Bank testbank = new Bank("TestBank");
+            Bank testbank = new Bank("RaboBank");
             testbank.openRekening("Henk", "Eindhoven");
 
             IRekening rekeningHenk = testbank.getRekening(100000000);
@@ -249,7 +249,7 @@ public class BankTest {
         // Overmaken van te groot bedrag
         try {
             Boolean maakOverBool;
-            Bank testbank = new Bank("TestBank");
+            Bank testbank = new Bank("RaboBank");
             testbank.openRekening("Henk", "Eindhoven");
             testbank.openRekening("Bob", "Rotterdam");
 
@@ -273,8 +273,8 @@ public class BankTest {
     @Test
     public void testGetName() {
         try {
-            Bank testbank = new Bank("TestBank");
-            Assert.assertEquals(testbank.getName(), "TestBank");
+            Bank testbank = new Bank("RaboBank");
+            Assert.assertEquals(testbank.getName(), "RaboBank");
         } catch (Exception e) {
             Assert.fail(e.getLocalizedMessage());
         }

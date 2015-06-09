@@ -27,7 +27,7 @@ public class BalieTest {
 
     @Before
     public void setUp() {
-        bank = new Bank("Rabobank");
+        bank = new Bank("RaboBank");
         try {
             balie = new Balie(bank);
         } catch (RemoteException ex) {
