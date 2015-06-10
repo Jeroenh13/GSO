@@ -71,7 +71,7 @@ public class BankierSessieController implements Initializable, RemotePropertyLis
             String eigenaar = rekening.getEigenaar().getNaam() + " te "
                     + rekening.getEigenaar().getPlaats();
             tfNameCity.setText(eigenaar);
-            UnicastRemoteObject.exportObject(this, 1100);
+            UnicastRemoteObject.exportObject(this, 1337);
             balie.addListener(this, String.valueOf(sessie.getRekening().getNr()));
         } catch (InvalidSessionException ex) {
             taMessage.setText("bankiersessie is verlopen");
@@ -155,7 +155,6 @@ public class BankierSessieController implements Initializable, RemotePropertyLis
                 tfAccountNr.setText(rekening.getNr() + "");
                 tfBalance.setText(rekening.getSaldo() + "");
             }
-
         }
         );
     }
