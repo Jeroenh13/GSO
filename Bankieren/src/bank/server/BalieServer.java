@@ -9,12 +9,14 @@ import bank.bankieren.Bank;
 import bank.gui.BankierClient;
 import bank.internettoegang.Balie;
 import bank.internettoegang.IBalie;
+import centrale.server.IBankCentrale;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -57,7 +59,7 @@ public class BalieServer extends Application {
         }
     }
 
-    public boolean startBalie(String nameBank) throws UnsupportedEncodingException {
+    public boolean startBalie(String nameBank) throws UnsupportedEncodingException, NotBoundException {
         nameBank = URLEncoder.encode(nameBank, "UTF-8");
         System.out.println(nameBank);
         Registry registry = null;
@@ -65,7 +67,7 @@ public class BalieServer extends Application {
         try {
             this.nameBank = nameBank;
             String address = java.net.InetAddress.getLocalHost().getHostAddress();
-            int port = 1099;
+            int port = 1335;
             Properties props = new Properties();
             String rmiBalie = address + ":" + port + "/" + nameBank;
             props.setProperty("balie", rmiBalie);
@@ -80,7 +82,14 @@ public class BalieServer extends Application {
             }
             IBalie balie = new Balie(new Bank(nameBank));
             Naming.rebind(nameBank, balie);
-
+            
+            try{
+                IBankCentrale centrale = (IBankCentrale) Naming.lookup("rmi://" + "192.168.2.8:1099/Centrale");
+                centrale.addBank(nameBank, balie);
+            }
+            catch(NotBoundException ex){
+                throw new NotBoundException("Bank centrale is niet online");
+            }
             return true;
 
         } catch (IOException ex) {

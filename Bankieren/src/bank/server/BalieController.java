@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -66,7 +67,7 @@ public class BalieController implements Initializable {
                     } else {
                         taMessage.setText("Connection Failed");
                     }
-                } catch (UnsupportedEncodingException ex) {
+                } catch (UnsupportedEncodingException | NotBoundException ex) {
                     Logger.getLogger(BalieController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }

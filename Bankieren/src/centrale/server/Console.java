@@ -125,7 +125,7 @@ public class Console {
         
         frame.getContentPane().setBackground(new Color(50, 50, 50));
         
-        frame.setSize(768, 512);
+        frame.setSize(256, 512);
         frame.setLocationRelativeTo(null);
         
         frame.setResizable(false);

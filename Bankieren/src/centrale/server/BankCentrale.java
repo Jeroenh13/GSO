@@ -59,7 +59,7 @@ public class BankCentrale extends UnicastRemoteObject implements IBankCentrale {
 
         if (!banks.containsKey(name)) {
             banks.put(name, bankBalie);
-
+            console.println(name + " succesfully added.");
             return banks.containsKey(name);
         }
         return false;
