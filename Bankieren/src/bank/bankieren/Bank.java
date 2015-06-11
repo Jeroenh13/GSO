@@ -40,7 +40,7 @@ public class Bank extends UnicastRemoteObject implements IBank {
         this.name = name;
     }
 
-    public int openRekening(String name, String city) {
+    public synchronized int openRekening(String name, String city) {
         if (name.equals("") || city.equals("")) {
             return -1;
         }
