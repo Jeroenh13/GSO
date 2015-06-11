@@ -42,6 +42,7 @@ public class BalieServer extends Application {
     private final double MINIMUM_WINDOW_WIDTH = 600.0;
     private final double MINIMUM_WINDOW_HEIGHT = 200.0;
     private String nameBank;
+    private Registry registry = null;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -62,12 +63,12 @@ public class BalieServer extends Application {
     public boolean startBalie(String nameBank) throws UnsupportedEncodingException, NotBoundException {
         nameBank = URLEncoder.encode(nameBank, "UTF-8");
         System.out.println(nameBank);
-        Registry registry = null;
         FileOutputStream out = null;
         try {
             this.nameBank = nameBank;
             String address = java.net.InetAddress.getLocalHost().getHostAddress();
-            int port = 1335;
+            int port = 1100;
+            int centralePort = 1099;
             Properties props = new Properties();
             String rmiBalie = address + ":" + port + "/" + nameBank;
             props.setProperty("balie", rmiBalie);
@@ -81,14 +82,17 @@ public class BalieServer extends Application {
                 registry = LocateRegistry.createRegistry(port);
             }
             IBalie balie = new Balie(new Bank(nameBank));
-            Naming.rebind(nameBank, balie);
             
+            registry.rebind(nameBank, balie);
+            
+            String rmiCentrale = "";
             try{
-                IBankCentrale centrale = (IBankCentrale) Naming.lookup("rmi://" + "192.168.2.8:1099/Centrale");
+                rmiCentrale = address + ":" + centralePort + "/" + "Centrale";
+                IBankCentrale centrale = (IBankCentrale) Naming.lookup("rmi://" + rmiCentrale);
                 centrale.addBank(nameBank, balie);
             }
             catch(NotBoundException ex){
-                throw new NotBoundException("Bank centrale is niet online");
+                throw new NotBoundException("Bank centrale is niet online (verwacht @ " + rmiCentrale);
             }
             return true;
 

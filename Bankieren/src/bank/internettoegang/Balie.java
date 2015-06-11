@@ -29,7 +29,7 @@ public class Balie extends UnicastRemoteObject implements IBalie, RemotePublishe
         random = new Random();
     }
 
-    public String openRekening(String naam, String plaats, String wachtwoord) {
+    public String openRekening(String naam, String plaats, String wachtwoord) throws RemoteException {
         if (naam.equals("")) {
             return null;
         }
@@ -70,6 +70,11 @@ public class Balie extends UnicastRemoteObject implements IBalie, RemotePublishe
             return null;
         }
     }
+    
+    public IBank getBank()
+    {
+        return bank;
+    }
 
     private static final String CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -83,8 +88,9 @@ public class Balie extends UnicastRemoteObject implements IBalie, RemotePublishe
     }
 
     @Override
-    public void inform(int to) {
-        bp.inform(this, String.valueOf(to), null, bank.getRekening(to));
+    public void inform(int to, IRekening rek) throws RemoteException {
+        bank.getRekening(to).setSaldo(rek.getSaldo());
+        bp.inform(this, String.valueOf(to), null, rek);
     }
 
     @Override

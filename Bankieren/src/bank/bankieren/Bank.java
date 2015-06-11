@@ -1,11 +1,21 @@
 package bank.bankieren;
 
+import bank.internettoegang.IBalie;
+import centrale.server.BankNotFoundException;
+import centrale.server.IBankCentrale;
 import fontys.util.*;
+import java.net.MalformedURLException;
+import java.net.UnknownHostException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class Bank implements IBank {
+public class Bank extends UnicastRemoteObject implements IBank {
 
     private static final long serialVersionUID = -8728841131739353765L;
     private Map<Integer, IRekeningTbvBank> accounts;
@@ -14,7 +24,7 @@ public class Bank implements IBank {
     private int nieuwReknr;
     private String name;
 
-    public Bank(String name) {
+    public Bank(String name) throws RemoteException {
         accounts = new HashMap<Integer, IRekeningTbvBank>();
         bankNumbers = new HashMap<String, Integer>();
         clients = new ArrayList<IKlant>();
@@ -58,8 +68,45 @@ public class Bank implements IBank {
     }
 
     @Override
-    public synchronized boolean maakOver(int source, int destination, Money money)
-            throws NumberDoesntExistException {
+    public boolean maakOver(int source, int destination, Money money)
+            throws NumberDoesntExistException, RemoteException, BankNotFoundException {
+        
+        String sourceBankName = getBankName(source);
+        String targetBankName = getBankName(destination);
+        
+        IBalie balie = null;
+        IBank destinationBank = null;
+        
+        if(!sourceBankName.equalsIgnoreCase(targetBankName))
+        {
+            System.out.println("Different banks contacting central server");
+            try {
+                String address = java.net.InetAddress.getLocalHost().getHostAddress();
+                int port = 1099;
+                String rmiCentrale = address + ":" + port + "/" + "Centrale";
+                IBankCentrale centrale = (IBankCentrale) Naming.lookup("rmi://" + rmiCentrale);
+                balie = centrale.getBank(targetBankName);
+                destinationBank = balie.getBank();
+                System.out.println("Bank found: " + destinationBank.getName());
+            } catch (UnknownHostException | NotBoundException | MalformedURLException | RemoteException ex) {
+                Logger.getLogger(Bank.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        else
+        {
+            try {
+                String address = java.net.InetAddress.getLocalHost().getHostAddress();
+                int port = 1099;
+                String rmiCentrale = address + ":" + port + "/" + "Centrale";
+                IBankCentrale centrale = (IBankCentrale) Naming.lookup("rmi://" + rmiCentrale);
+                balie = centrale.getBank(sourceBankName);
+                destinationBank = this;
+            } catch (UnknownHostException | NotBoundException | MalformedURLException | RemoteException ex) {
+                Logger.getLogger(Bank.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
         if (source == destination) {
             throw new RuntimeException(
                     "cannot transfer money to your own account");
@@ -80,13 +127,22 @@ public class Bank implements IBank {
         if (!success) {
             return false;
         }
-
-        IRekeningTbvBank dest_account = (IRekeningTbvBank) getRekening(destination);
+        
+        if(destinationBank == null)
+        {
+            throw new BankNotFoundException(targetBankName + " did not register with central server");
+        }
+        IRekeningTbvBank dest_account = (IRekeningTbvBank) destinationBank.getRekening(destination);
         if (dest_account == null) {
             throw new NumberDoesntExistException("account " + destination
                     + " unknown at " + name);
         }
         success = dest_account.muteer(money);
+        if(balie != null && success)
+        {
+            System.out.println("Informing: " + String.valueOf(destination));
+            balie.inform(destination, (IRekening)dest_account);
+        }
 
         if (!success) // rollback
         {
@@ -98,6 +154,18 @@ public class Bank implements IBank {
     @Override
     public String getName() {
         return name;
+    }
+    
+    private String getBankName(int num){
+        String id = String.copyValueOf(String.valueOf(num).toCharArray(), 0, 1);
+        
+        for (Map.Entry<String, Integer> bank : bankNumbers.entrySet()) {
+            
+            if(id.equals(String.copyValueOf(String.valueOf(bank.getValue()).toCharArray(), 0, 1)))
+                return bank.getKey();
+            
+        }
+        return null;
     }
 
 }

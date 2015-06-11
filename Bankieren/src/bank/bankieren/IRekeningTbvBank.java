@@ -10,6 +10,4 @@ interface IRekeningTbvBank extends IRekening {
 	 * @return (saldo + bedrag) >= -(maximaal krediet)
 	 */
 	boolean muteer(Money bedrag);
-	
-
 }

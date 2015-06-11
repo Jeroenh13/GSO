@@ -69,6 +69,8 @@ public class BalieController implements Initializable {
                     }
                 } catch (UnsupportedEncodingException | NotBoundException ex) {
                     Logger.getLogger(BalieController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(BalieController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

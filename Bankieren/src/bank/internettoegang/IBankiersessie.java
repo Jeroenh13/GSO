@@ -4,6 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import bank.bankieren.IRekening;
 import bank.bankieren.Money;
+import centrale.server.BankNotFoundException;
 import fontys.util.InvalidSessionException;
 import fontys.util.NumberDoesntExistException;
 
@@ -36,7 +37,7 @@ public interface IBankiersessie extends Remote {
 	 */
 	boolean maakOver(int bestemming, Money bedrag)
 			throws NumberDoesntExistException, InvalidSessionException,
-			RemoteException;
+			RemoteException, BankNotFoundException;
 
 	/**
 	 * sessie wordt beeindigd

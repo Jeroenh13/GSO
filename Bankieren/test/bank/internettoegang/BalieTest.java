@@ -26,7 +26,7 @@ public class BalieTest {
     public BalieServer balieserver;
 
     @Before
-    public void setUp() {
+    public void setUp() throws RemoteException {
         bank = new Bank("RaboBank");
         try {
             balie = new Balie(bank);

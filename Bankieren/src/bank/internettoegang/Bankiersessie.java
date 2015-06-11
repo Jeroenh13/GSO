@@ -6,6 +6,7 @@ import java.rmi.server.UnicastRemoteObject;
 import bank.bankieren.IBank;
 import bank.bankieren.IRekening;
 import bank.bankieren.Money;
+import centrale.server.BankNotFoundException;
 
 import fontys.util.InvalidSessionException;
 import fontys.util.NumberDoesntExistException;
@@ -31,7 +32,7 @@ public class Bankiersessie extends UnicastRemoteObject implements
     @Override
     public boolean maakOver(int bestemming, Money bedrag)
             throws NumberDoesntExistException, InvalidSessionException,
-            RemoteException {
+            RemoteException, BankNotFoundException {
 
         updateLaatsteAanroep();
 
@@ -42,7 +43,7 @@ public class Bankiersessie extends UnicastRemoteObject implements
         if (!bedrag.isPositive()) {
             throw new RuntimeException("amount must be positive");
         }
-
+        System.out.println("Starting transaction");
         return bank.maakOver(reknr, bestemming, bedrag);
     }
 

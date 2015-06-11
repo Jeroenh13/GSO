@@ -60,8 +60,13 @@ class Rekening implements IRekeningTbvBank {
     public Money getSaldo() {
         return saldo;
     }
+    
+    public void setSaldo(Money newSaldo) {
+        saldo = newSaldo;
+    }
 
-    public boolean muteer(Money bedrag) {
+    @Override
+    public synchronized boolean muteer(Money bedrag) {
         if (bedrag.getCents() == 0) {
             throw new RuntimeException(" bedrag = 0 bij aanroep 'muteer'");
         }

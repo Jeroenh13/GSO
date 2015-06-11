@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.rmi.Naming;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,7 +63,6 @@ public class BankierClient extends Application {
             props.load(in);
             String rmiBalie = props.getProperty("balie");
             in.close();
-
             IBalie balie = (IBalie) Naming.lookup("rmi://" + rmiBalie);
             return balie;
 

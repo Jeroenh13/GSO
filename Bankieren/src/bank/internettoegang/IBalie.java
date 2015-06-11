@@ -1,5 +1,7 @@
 package bank.internettoegang;
 
+import bank.bankieren.IBank;
+import bank.bankieren.IRekening;
 import fontys.observer.RemotePropertyListener;
 import fontys.observer.RemotePublisher;
 import java.rmi.*;
@@ -32,14 +34,17 @@ public interface IBalie extends Remote , RemotePublisher {
      * @throws java.rmi.RemoteException
    */
   IBankiersessie logIn(String accountnaam, String wachtwoord) throws RemoteException;
+  
+  IBank getBank() throws RemoteException;
 
   /**
    * Triggered de balie om de de gebruiker van het rekeningnummer te informeren over de
    * gemaakt transactie
    * @param to 
+     * @param rek 
      * @throws java.rmi.RemoteException 
    */
-  public void inform(int to) throws RemoteException;
+  public void inform(int to, IRekening rek) throws RemoteException;
   
   @Override
   public void addListener(RemotePropertyListener listener, String property) throws RemoteException;

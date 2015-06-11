@@ -9,11 +9,14 @@ import bank.bankieren.IRekening;
 import bank.bankieren.Money;
 import bank.internettoegang.IBalie;
 import bank.internettoegang.IBankiersessie;
+import centrale.server.BankNotFoundException;
 import fontys.observer.RemotePropertyListener;
 import fontys.util.InvalidSessionException;
 import fontys.util.NumberDoesntExistException;
 import java.beans.PropertyChangeEvent;
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.ServerSocket;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -59,7 +62,7 @@ public class BankierSessieController implements Initializable, RemotePropertyLis
     private IBalie balie;
     private IBankiersessie sessie;
 
-    public void setApp(BankierClient application, IBalie balie, IBankiersessie sessie) {
+    public void setApp(BankierClient application, IBalie balie, IBankiersessie sessie) throws IOException, Exception {
         this.balie = balie;
         this.sessie = sessie;
         this.application = application;
@@ -71,7 +74,7 @@ public class BankierSessieController implements Initializable, RemotePropertyLis
             String eigenaar = rekening.getEigenaar().getNaam() + " te "
                     + rekening.getEigenaar().getPlaats();
             tfNameCity.setText(eigenaar);
-            UnicastRemoteObject.exportObject(this, 1337);
+            UnicastRemoteObject.exportObject(this, findFreePort());
             balie.addListener(this, String.valueOf(sessie.getRekening().getNr()));
         } catch (InvalidSessionException ex) {
             taMessage.setText("bankiersessie is verlopen");
@@ -106,7 +109,7 @@ public class BankierSessieController implements Initializable, RemotePropertyLis
     }
 
     @FXML
-    private void transfer(ActionEvent event) {
+    private void transfer(ActionEvent event) throws BankNotFoundException {
         try {
             int from = Integer.parseInt(tfAccountNr.getText());
             int to = Integer.parseInt(tfToAccountNr.getText());
@@ -115,7 +118,6 @@ public class BankierSessieController implements Initializable, RemotePropertyLis
             }
             long centen = (long) (Double.parseDouble(tfAmount.getText()) * 100);
             if (sessie.maakOver(to, new Money(centen, Money.EURO))) {
-                balie.inform(to);
                 Platform.runLater(new Runnable() {
 
                     @Override
@@ -126,8 +128,7 @@ public class BankierSessieController implements Initializable, RemotePropertyLis
                         } catch (InvalidSessionException | RemoteException ex) {
                             Logger.getLogger(BankierSessieController.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        if(rekening != null)
-                        {
+                        if (rekening != null) {
                             tfAccountNr.setText(rekening.getNr() + "");
                             tfBalance.setText(rekening.getSaldo() + "");
                         }
@@ -157,5 +158,29 @@ public class BankierSessieController implements Initializable, RemotePropertyLis
             }
         }
         );
+    }
+
+    private int findFreePort() throws Exception {
+        ServerSocket socket = null;
+        try {
+            socket = new ServerSocket(0);
+            socket.setReuseAddress(true);
+            int port = socket.getLocalPort();
+            try {
+                socket.close();
+            } catch (IOException e) {
+                // Ignore IOException on close()
+            }
+            return port;
+        } catch (IOException e) {
+        } finally {
+            if (socket != null) {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+        throw new Exception("No open ports were found!");
     }
 }
