@@ -55,7 +55,7 @@
                <image>
                   <Image url="@../images/Navigeren.png" />
                </image></ImageView>
-            <ImageView fitHeight="227.0" fitWidth="227.0" layoutX="140.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imgPlattegrond" fitHeight="227.0" fitWidth="227.0" layoutX="140.0" layoutY="57.0" onMouseReleased="#gotoPlattegrond" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/Plattegrond.png" />
                </image></ImageView>
