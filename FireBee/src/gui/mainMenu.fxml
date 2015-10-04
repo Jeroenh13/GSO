@@ -51,7 +51,12 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-            <ImageView fitHeight="227.0" fitWidth="303.0" layoutX="140.0" layoutY="414.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imgNavigation" fitHeight="693.0" fitWidth="581.0" layoutX="61.0" layoutY="3.0" onMouseReleased="#gotoMenu" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../images/Navigatie.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imgNavigeren" fitHeight="227.0" fitWidth="303.0" layoutX="140.0" layoutY="414.0" onMouseReleased="#gotoNavigation" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/Navigeren.png" />
                </image></ImageView>

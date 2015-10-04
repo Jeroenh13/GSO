@@ -29,8 +29,17 @@ import javafx.stage.Stage;
  */
 public class MainMenuController extends Application {
 
-    @FXML
-    ImageView imgPlattegrond;
+    @FXML ImageView imgPlattegrond;
+    @FXML ImageView imgNavigeren;
+    @FXML ImageView imgNavigation;
+    
+    @FXML ImageView imgPoi1;
+    @FXML ImageView imgPoi2;
+    
+    @FXML ImageView imgUnit1;
+    @FXML ImageView imgUnit2;
+    @FXML ImageView imgUnit3;
+    
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -46,7 +55,32 @@ public class MainMenuController extends Application {
     private void gotoPlattegrond(MouseEvent event) {
         gotoNextScreen("Plattegrond");
     }
-
+    
+    @FXML
+    private void gotoNavigation(MouseEvent event) {
+        gotoNextScreen("Navigation");
+    }
+    
+    @FXML
+    private void gotoMenu(MouseEvent event) {
+        gotoNextScreen("Menu");
+    }
+    
+    @FXML
+    private void toggleUnits(MouseEvent event) {
+        System.out.println("Toggle Units");
+        imgUnit1.setVisible(!imgUnit1.isVisible());
+        imgUnit2.setVisible(!imgUnit2.isVisible());
+        imgUnit3.setVisible(!imgUnit3.isVisible());
+    }
+    
+    @FXML
+    private void togglePoi(MouseEvent event) {
+        System.out.println("Toggle Pois");
+        imgPoi1.setVisible(!imgPoi1.isVisible());
+        imgPoi2.setVisible(!imgPoi2.isVisible());
+    }
+    
     /**
      * The main() method is ignored in correctly deployed JavaFX application.
      * main() serves only as fallback in case the application can not be
@@ -60,7 +94,7 @@ public class MainMenuController extends Application {
     }
 
     private void gotoNextScreen(String input){
-        if ("Plattegrond".equals(input)) {
+        if (input.equals("Plattegrond")) {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("Plattegrond-2.fxml"));
                 
@@ -72,6 +106,18 @@ public class MainMenuController extends Application {
             } catch (IOException ex) {
                 Logger.getLogger(MainMenuController.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+        
+        else if(input.equals("Navigation"))
+        {
+            imgNavigation.setVisible(true);
+            imgNavigation.toFront();
+        }
+        
+        else if(input.equals("Menu"))
+        {
+            imgNavigation.setVisible(false);
+            imgNavigation.toBack();
         }
     }
 }
