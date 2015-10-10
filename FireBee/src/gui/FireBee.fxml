@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<VBox maxHeight="1024.0" maxWidth="768.0" prefHeight="1024.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.FireBeeController">
+  <children>
+    <MenuBar VBox.vgrow="NEVER">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem mnemonicParsing="false" text="New" />
+            <MenuItem mnemonicParsing="false" text="Open…" />
+            <Menu mnemonicParsing="false" text="Open Recent" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Close" />
+            <MenuItem mnemonicParsing="false" text="Save" />
+            <MenuItem mnemonicParsing="false" text="Save As…" />
+            <MenuItem mnemonicParsing="false" text="Revert" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Preferences…" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Quit" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Undo" />
+            <MenuItem mnemonicParsing="false" text="Redo" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Cut" />
+            <MenuItem mnemonicParsing="false" text="Copy" />
+            <MenuItem mnemonicParsing="false" text="Paste" />
+            <MenuItem mnemonicParsing="false" text="Delete" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Select All" />
+            <MenuItem mnemonicParsing="false" text="Unselect All" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+    <AnchorPane fx:id="apMain" maxWidth="0.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="NEVER">
+      <children>
+            <Label layoutX="309.0" layoutY="900.0" text="Navigeren">
+               <font>
+                  <Font size="33.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="imgNavigation" fitHeight="995.0" fitWidth="580.0" layoutX="94.0" onMouseReleased="#gotoMenu" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../images/Navigatie.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imgNavigeren" fitHeight="300.0" fitWidth="300.0" layoutX="234.0" layoutY="600.0" onMouseReleased="#gotoNavigation" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Navigeren.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imgPlattegrond" fitHeight="300.0" fitWidth="300.0" layoutX="234.0" layoutY="100.0" onMouseReleased="#gotoPlattegrond" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Plattegrond.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="298.0" layoutY="400.0" text="Plattegrond">
+               <font>
+                  <Font size="33.0" />
+               </font>
+            </Label>
+            <AnchorPane fx:id="apFloorPlan" prefHeight="768.0" prefWidth="1024.0" visible="false">
+               <children>
+                  <ImageView fx:id="imgFloorPlan" fitHeight="768.0" fitWidth="1024.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="569.0">
+                     <image>
+                        <Image url="@../images/FloorPlan.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="792.0" layoutY="658.0" text="POI toevoegen">
+                     <font>
+                        <Font size="27.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="397.0" layoutY="658.0" text="Personen weergeven">
+                     <font>
+                        <Font size="27.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="113.0" layoutY="658.0" text="Bericht zenden">
+                     <font>
+                        <Font size="27.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="92.0" fitWidth="68.0" layoutX="852.0" layoutY="566.0" onMouseClicked="#togglePoi" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/poiMarker.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="131.0" fitWidth="184.0" layoutX="430.0" layoutY="546.0" onMouseClicked="#toggleUnits" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/poppetj.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="92.0" fitWidth="150.0" layoutX="140.0" layoutY="566.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/Message.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="39.0" fitWidth="332.0" layoutX="27.0" layoutY="14.0" onMouseClicked="#gotoMenu" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/arrowBack.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="imgUnit3" fitHeight="63.0" fitWidth="86.0" layoutX="711.0" layoutY="262.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/poppetj.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="imgUnit2" fitHeight="63.0" fitWidth="86.0" layoutX="809.0" layoutY="283.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/poppetj.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="imgUnit1" fitHeight="63.0" fitWidth="86.0" layoutX="792.0" layoutY="353.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/poppetj.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="imgPoi1" fitHeight="74.0" fitWidth="28.0" layoutX="181.0" layoutY="448.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/poiMarker.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="imgPoi2" fitHeight="74.0" fitWidth="28.0" layoutX="410.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/poiMarker.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+      </children>
+    </AnchorPane>
+  </children>
+</VBox>
