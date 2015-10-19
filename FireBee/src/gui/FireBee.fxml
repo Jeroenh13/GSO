@@ -57,9 +57,24 @@
                   <Font size="33.0" />
                </font>
             </Label>
-            <ImageView fx:id="imgNavigation" fitHeight="995.0" fitWidth="580.0" layoutX="94.0" onMouseReleased="#gotoMenu" pickOnBounds="true" preserveRatio="true" visible="false">
+            <ImageView fx:id="imgBack" fitHeight="39.0" fitWidth="332.0" layoutX="40.0" layoutY="27.0" onMouseClicked="#gotoMenu" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../images/arrowBack.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imgP" fitHeight="64.0" fitWidth="64.0" layoutX="685.0" layoutY="14.0" onMouseClicked="#gotoParking" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../images/p.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imgNavigation" fitHeight="995.0" fitWidth="580.0" layoutX="100.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../images/Navigatie.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imgParking" fitHeight="995.0" fitWidth="580.0" layoutX="100.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../images/parkeerplaatsen.png" />
                </image>
             </ImageView>
             <ImageView fx:id="imgNavigeren" fitHeight="300.0" fitWidth="300.0" layoutX="234.0" layoutY="600.0" onMouseReleased="#gotoNavigation" pickOnBounds="true" preserveRatio="true">
@@ -109,7 +124,7 @@
                         <Image url="@../images/poppetj.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="92.0" fitWidth="150.0" layoutX="140.0" layoutY="566.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="92.0" fitWidth="150.0" layoutX="140.0" layoutY="566.0" onMouseClicked="#messagePopup" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/Message.png" />
                      </image>

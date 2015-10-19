@@ -5,22 +5,19 @@
  */
 package gui;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -37,6 +34,9 @@ public class FireBeeController extends Application {
     @FXML ImageView imgFloorPlan;
     @FXML ImageView imgNavigeren;
     @FXML ImageView imgNavigation;
+    @FXML ImageView imgParking;
+    @FXML ImageView imgP;
+    @FXML ImageView imgBack;
     
     @FXML ImageView imgPoi1;
     @FXML ImageView imgPoi2;
@@ -45,7 +45,11 @@ public class FireBeeController extends Application {
     @FXML ImageView imgUnit2;
     @FXML ImageView imgUnit3;
     
+    @FXML ComboBox cbTeams;
+    @FXML Stage dialog;
+    
     private boolean vertical = true;
+    
     
 
     @Override
@@ -72,13 +76,41 @@ public class FireBeeController extends Application {
     }
     
     @FXML
+    private void gotoParking(MouseEvent event) {
+        gotoNextScreen("Parking");
+    }
+    
+    @FXML
     private void gotoMenu(MouseEvent event) {
         gotoNextScreen("Menu");
     }
     
     @FXML
+    private void messagePopup(MouseEvent event) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("SendMessage.fxml"));
+        dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(getStage());
+        Scene dialogScene = new Scene(root);
+        dialog.setScene(dialogScene);
+        dialog.show();
+        
+        cbTeams = (ComboBox) dialogScene.lookup("#cbTeams");
+        
+        cbTeams.getItems().addAll(
+                "Team A",
+                "Team B",
+                "Team C"
+        );
+    }
+    
+    @FXML
+    private void sendMessage(MouseEvent event){
+        getDialogStage().close();
+    }
+    
+    @FXML
     private void toggleUnits(MouseEvent event) {
-        System.out.println("Toggle Units");
         imgUnit1.setVisible(!imgUnit1.isVisible());
         imgUnit2.setVisible(!imgUnit2.isVisible());
         imgUnit3.setVisible(!imgUnit3.isVisible());
@@ -86,7 +118,6 @@ public class FireBeeController extends Application {
     
     @FXML
     private void togglePoi(MouseEvent event) {
-        System.out.println("Toggle Pois");
         imgPoi1.setVisible(!imgPoi1.isVisible());
         imgPoi2.setVisible(!imgPoi2.isVisible());
     }
@@ -118,6 +149,20 @@ public class FireBeeController extends Application {
         {
             imgNavigation.setVisible(true);
             imgNavigation.toFront();
+            imgP.setVisible(true);
+            imgP.toFront();
+            imgBack.setVisible(true);
+            imgBack.toFront();
+        }
+        
+        else if(input.equals("Parking"))
+        {
+            imgParking.setVisible(true);
+            imgParking.toFront();
+            imgNavigation.setVisible(false);
+            imgNavigation.toBack();
+            imgP.setVisible(false);
+            imgP.toBack();
         }
         
         else if(input.equals("Menu"))
@@ -127,6 +172,12 @@ public class FireBeeController extends Application {
             apFloorPlan.toBack();
             imgNavigation.setVisible(false);
             imgNavigation.toBack();
+            imgParking.setVisible(false);
+            imgParking.toBack();
+            imgP.setVisible(false);
+            imgP.toBack();
+            imgBack.setVisible(false);
+            imgBack.toBack();
         }
     }
     
@@ -151,5 +202,9 @@ public class FireBeeController extends Application {
     
     private Stage getStage() {
         return (Stage) imgPlattegrond.getScene().getWindow();
+    }
+    
+    private Stage getDialogStage() {
+        return (Stage) cbTeams.getScene().getWindow();
     }
 }

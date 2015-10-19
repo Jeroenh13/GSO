@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.FireBeeController">
+   <children>
+      <AnchorPane prefHeight="175.0" prefWidth="300.0">
+         <children>
+            <TextArea layoutX="13.0" layoutY="50.0" prefHeight="79.0" prefWidth="270.0" />
+            <ComboBox fx:id="cbTeams" layoutX="14.0" layoutY="140.0" prefHeight="25.0" prefWidth="110.0" promptText="Allen" visibleRowCount="5" />
+            <Button fx:id="btnSendMessage" layoutX="193.0" layoutY="140.0" mnemonicParsing="false" onMouseClicked="#sendMessage" prefHeight="25.0" prefWidth="90.0" text="Verzenden" />
+            <Label layoutX="80.0" layoutY="14.0" text="Bericht zenden">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
